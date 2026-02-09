@@ -1,0 +1,21 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: ${TRANSACTION_DB_URL:jdbc:postgresql://localhost:5432/transactionsdb}
+    username: ${TRANSACTION_DB_USER:postgres}
+    password: ${TRANSACTION_DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+account-service:
+  url: ${ACCOUNT_SERVICE_URL:http://localhost:8080/api}
