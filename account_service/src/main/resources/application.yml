@@ -26,6 +26,44 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+                server:
+          port: 8081
+
+        spring:
+          application:
+            name: account-service
+
+          datasource:
+            url: jdbc:postgresql://localhost:5432/account_db
+            username: postgres
+            password: postgres
+
+          jpa:
+            hibernate:
+              ddl-auto: update
+            show-sql: true
+            properties:
+              hibernate:
+                format_sql: true
+
+           server:
+               port: 8082
+
+              spring:
+              application:
+             name: transaction-service
+
+         datasource:
+           url: jdbc:postgresql://localhost:5432/account_db
+           username: postgres
+           password: postgres
+
+    jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    
+
   jackson:
     serialization:
       write-dates-as-timestamps: false
