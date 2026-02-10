@@ -1,0 +1,58 @@
+_format_version: "3.0"
+
+# =========================
+# Consumers (Clients)
+# =========================
+consumers:
+  - username: youth-banking-client
+    jwt_secrets:
+      - key: youth-client
+        secret: youth-secret
+        algorithm: HS256
+
+# =========================
+# Services & Routes
+# =========================
+services:
+  - name: banking-api
+    url: http://fastapi:8000
+    routes:
+      - name: banking-route
+        paths:
+          - /api
+        strip_path: true
+
+    plugins:
+      # -------------------------
+      # JWT Authentication
+      # -------------------------
+      - name: jwt
+
+      # -------------------------
+      # Age Verification (Youth Banking Rule)
+      # -------------------------
+      - name: pre-function
+        config:
+          access:
+            - |
+              local claims = kong.ctx.shared.jwt_claims
+
+              if not claims then
+                return kong.response.exit(401, { message = "Missing JWT claims" })
+              end
+
+              if not claims.age then
+                return kong.response.exit(401, { message = "Age claim is required" })
+              end
+
+              if claims.age < 18 or claims.age > 34 then
+                return kong.response.exit(
+                  403,
+                  { message = "Youth banking is only available for ages 18 to 34" }
+                )
+              end
+
+      # -------------------------
+      # Metrics
+      # -------------------------
+      - name: prometheus
