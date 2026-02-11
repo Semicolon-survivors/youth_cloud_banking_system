@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${TRANSACTION_DB_URL:jdbc:postgresql://localhost:5432/transactionsdb}
-    username: ${TRANSACTION_DB_USER:postgres}
-    password: ${TRANSACTION_DB_PASSWORD:postgres}
+    url: :jdbc:postgresql://localhost:5432/transactionsdb
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,4 +18,4 @@ management:
         include: health,info
 
 account-service:
-  url: ${ACCOUNT_SERVICE_URL:http://localhost:8080/api}
+  url: http://localhost:8080/api
