@@ -25,6 +25,9 @@ public class Account {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    @Column(name = "id_number", nullable = false, unique = true, length = 13)
+    private String idNumber;
+
     @Column(name = "account_number", unique = true, nullable = false, length = 20)
     private String accountNumber;
 

@@ -1,11 +1,14 @@
 package com.bank.account_service.dto;
 
 import com.bank.account_service.model.Account;
+import com.bank.account_service.util.IdNumberUtil;
+
 import java.math.BigDecimal;
 
 public class CreateAccountRequest {
 
     private Long userId;
+    private String idNumber;
     private String accountName;
     private String accountHolderName;
     private String accountType;
@@ -18,6 +21,12 @@ public class CreateAccountRequest {
     public void validate() {
         if (userId == null) {
             throw new IllegalArgumentException("User ID is required");
+        }
+        if (idNumber == null || idNumber.isBlank()) {
+            throw new IllegalArgumentException("ID Number is required");
+        }
+        if (idNumber.length() != 13) {
+            throw new IllegalArgumentException("ID Number must be 13 digits");
         }
         if (accountName == null || accountName.isBlank()) {
             throw new IllegalArgumentException("Account name is required");
@@ -32,8 +41,14 @@ public class CreateAccountRequest {
 
     // Convert DTO to Account entity
     public Account toEntity() {
+
         Account account = new Account();
         account.setUserId(this.userId);
+        account.setIdNumber(this.idNumber);
+
+        // Extract DOB from ID Number
+        account.setDateOfBirth(IdNumberUtil.extractDateOfBirth(this.idNumber));
+
         account.setAccountName(this.accountName);
         account.setAccountHolderName(this.accountHolderName);
         account.setAccountType(Account.AccountType.valueOf(this.accountType.toUpperCase()));
@@ -41,12 +56,16 @@ public class CreateAccountRequest {
         account.setEmail(this.email);
         account.setPhoneNumber(this.phoneNumber);
         account.setAddress(this.address);
+
         return account;
     }
 
     // Getters and Setters
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
+
+    public String getIdNumber() { return idNumber; }
+    public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
 
     public String getAccountName() { return accountName; }
     public void setAccountName(String accountName) { this.accountName = accountName; }

@@ -10,4 +10,6 @@ public interface AccountService {
     Account getAccountById(Long id);
     List<Account> getAccountsByUserId(Long userId);
     Account updateAccountStatus(Long accountId, Account.AccountStatus status);
+    Account updateBalance(Long accountId, BigDecimal amount);
+
 }

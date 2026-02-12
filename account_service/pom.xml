@@ -61,6 +61,11 @@
             <artifactId>account-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>cloud-banking</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

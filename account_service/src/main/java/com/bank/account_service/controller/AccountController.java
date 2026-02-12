@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,5 +72,20 @@ public class AccountController {
     @GetMapping("/test")
     public String test() {
         return "Account Service is working! " + java.time.LocalDateTime.now();
+    }
+
+
+    @PutMapping("/{id}/balance")
+    public ResponseEntity<?> updateBalance(
+            @PathVariable Long id,
+            @RequestParam BigDecimal amount) {
+
+        try {
+            Account updated = accountService.updateBalance(id, amount);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 }

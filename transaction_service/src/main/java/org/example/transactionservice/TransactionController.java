@@ -1,6 +1,9 @@
 package org.example.transactionservice;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,30 +37,75 @@ public class TransactionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(java.util.Map.of("error", "Transaction not found: " + id)));
+        Optional<Transaction> txOpt = repository.findById(id);
+        if (txOpt.isPresent()) {
+            return ResponseEntity.ok(txOpt.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Map.of("error", "Transaction not found: " + id));
+        }
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody TransactionRequest request) {
-        try {
-            restTemplate.getForEntity(
-                    accountServiceUrl + "/accounts/" + request.getAccountId(), Object.class);
-        } catch (HttpClientErrorException.NotFound ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(java.util.Map.of("error", "Account not found: " + request.getAccountId()));
-        } catch (HttpClientErrorException ex) {
-            return ResponseEntity.status(ex.getStatusCode())
-                    .body(java.util.Map.of("error", "Account service error: " + ex.getStatusText()));
-        }
 
-        Transaction transaction = new Transaction(
-                request.getAccountId(),
-                request.getAmount(),
-                request.getType()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(transaction));
+        try {
+            // 1️⃣ Get Account from Account Service
+            ResponseEntity<AccountResponse> response =
+                    restTemplate.getForEntity(
+                            accountServiceUrl + "/api/accounts/" + request.getAccountId(),
+                            AccountResponse.class
+                    );
+
+            AccountResponse account = response.getBody();
+
+            if (account == null) {
+                return ResponseEntity.badRequest()
+                        .body(java.util.Map.of("error", "Account not found"));
+            }
+
+            BigDecimal currentBalance = account.getBalance();
+            BigDecimal amount = request.getAmount();
+
+            BigDecimal balanceChange;
+
+            // 2️⃣ Business Logic
+            if ("DEPOSIT".equalsIgnoreCase(request.getType())) {
+                balanceChange = amount;
+            } else if ("WITHDRAW".equalsIgnoreCase(request.getType())) {
+
+                if (currentBalance.compareTo(amount) < 0) {
+                    return ResponseEntity.badRequest()
+                            .body(java.util.Map.of("error", "Insufficient balance"));
+                }
+
+                balanceChange = amount.negate();
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(java.util.Map.of("error", "Invalid transaction type"));
+            }
+
+            // 3️⃣ Update Account Balance
+            restTemplate.put(
+                    accountServiceUrl + "/api/accounts/" + request.getAccountId() +
+                            "/balance?amount=" + balanceChange,
+                    null
+            );
+
+            // 4️⃣ Save Transaction
+            Transaction transaction = new Transaction(
+                    request.getAccountId(),
+                    amount,
+                    request.getType()
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(repository.save(transaction));
+
+        } catch (HttpClientErrorException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(java.util.Map.of("error", "Account service error"));
+        }
     }
+
 }

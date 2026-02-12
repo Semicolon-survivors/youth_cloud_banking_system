@@ -1,21 +1,88 @@
+# ============================================
+# TRANSACTION SERVICE - COMPLETE CONFIGURATION
+# ============================================
+
 server:
-  port: 8083
+  port: 8081
+  servlet:
+    context-path: /api
 
 spring:
+  application:
+    name: transaction-service
+
   datasource:
-    url: :jdbc:postgresql://localhost:5432/transactionsdb
+    url: jdbc:postgresql://localhost:5432/youth_bank_transactions
     username: postgres
-    password: postgres
+    password: Puledi@12
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      pool-name: TransactionServiceHikariCP
+
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
     open-in-view: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    time-zone: Africa/Johannesburg
+
+# ============================================
+# ACCOUNT SERVICE INTEGRATION
+# ============================================
+
+account-service:
+  url: http://localhost:8080
+
+# ============================================
+# TRANSACTION BUSINESS RULES
+# ============================================
+
+transaction:
+  limits:
+    max-deposit-amount: 100000.00
+    max-withdrawal-amount: 50000.00
+    min-deposit-amount: 1.00
+    min-withdrawal-amount: 1.00
+
+  fees:
+    withdrawal-fee: 5.00
+
+  reference-prefix: TXN
+
+# ============================================
+# LOGGING
+# ============================================
+
+logging:
+  level:
+    org.example.transactionservice: DEBUG
+    org.springframework.web.client: DEBUG
+    org.hibernate.SQL: DEBUG
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# ============================================
+# ACTUATOR
+# ============================================
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
-
-account-service:
-  url: http://localhost:8080/api
+  endpoint:
+    health:
+      show-details: always
