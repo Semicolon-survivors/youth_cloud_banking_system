@@ -1,0 +1,30 @@
+2026-02-12 09:03:16.975 [main] INFO  o.e.t.TransactionServiceApplication - Starting TransactionServiceApplication using Java 21.0.9 with PID 21316 (C:\Users\Capaciti\Downloads\youth_cloud_banking_system-main (1)\youth_cloud_banking_system-main\transaction_service\target\classes started by Capaciti in C:\Users\Capaciti\Downloads\youth_cloud_banking_system-main (1))
+2026-02-12 09:03:16.997 [main] INFO  o.e.t.TransactionServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-12 09:03:18.956 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-12 09:03:19.052 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 82 ms. Found 1 JPA repository interface.
+2026-02-12 09:03:20.603 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-02-12 09:03:20.623 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-12 09:03:20.624 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2026-02-12 09:03:20.743 [main] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2026-02-12 09:03:20.744 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3613 ms
+2026-02-12 09:03:21.372 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-12 09:03:21.506 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-02-12 09:03:21.568 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-02-12 09:03:22.237 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-12 09:03:22.287 [main] INFO  com.zaxxer.hikari.HikariDataSource - TransactionServiceHikariCP - Starting...
+2026-02-12 09:03:22.668 [main] INFO  com.zaxxer.hikari.pool.HikariPool - TransactionServiceHikariCP - Added connection org.postgresql.jdbc.PgConnection@7ef4aceb
+2026-02-12 09:03:22.670 [main] INFO  com.zaxxer.hikari.HikariDataSource - TransactionServiceHikariCP - Start completed.
+2026-02-12 09:03:22.733 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-12 09:03:23.999 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-12 09:03:24.111 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-12 09:03:24.409 [main] DEBUG o.h.s.internal.StatisticsInitiator - Statistics initialized [enabled=false]
+2026-02-12 09:03:24.923 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 6 mappings in 'requestMappingHandlerMapping'
+2026-02-12 09:03:25.118 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-02-12 09:03:25.219 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-02-12 09:03:25.293 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-02-12 09:03:25.892 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-02-12 09:03:26.034 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api'
+2026-02-12 09:03:26.054 [main] INFO  o.e.t.TransactionServiceApplication - Started TransactionServiceApplication in 10.113 seconds (process running for 10.915)
+2026-02-12 09:04:23.925 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-12 09:04:23.929 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - TransactionServiceHikariCP - Shutdown initiated...
+2026-02-12 09:04:23.948 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - TransactionServiceHikariCP - Shutdown completed.
