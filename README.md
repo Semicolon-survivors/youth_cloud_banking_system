@@ -4,7 +4,7 @@
 
 This project is a **cloud‑simulated youth banking system** built using open‑source tools and a microservices architecture. It demonstrates how to design, secure, and monitor distributed backend services using **Java Spring Boot**, **PostgreSQL**, and **Kong API Gateway**.
 
-The system focuses on secure API access and youth banking rules (age 18–34) enforced at the gateway level.
+The system focuses on secure API access and youth banking rules (age 13–25) enforced at the gateway level.
 
 ---
 
@@ -68,7 +68,7 @@ Clients must provide a valid JWT token to access the API.
 
 A custom Kong pre‑function plugin checks the JWT `age` claim:
 
-* Allowed age: **18–34 years**
+* Allowed age: **13–25 years**
 * Requests outside this range are rejected
 
 ### ✅ Metrics Collection
