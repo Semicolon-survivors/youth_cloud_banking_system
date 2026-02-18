@@ -1,6 +1,6 @@
 # application.yml
 server:
-  port: 8080
+  port: 8085
   servlet:
     context-path: /api
 
@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/youth_bank_accounts
     username: postgres
-    password: Puledi@12
+    password: postgres
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
