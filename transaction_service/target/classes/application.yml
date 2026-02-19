@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/youth_bank_transactions
     username: postgres
-    password: postgres
+    password: Puledi@12
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
