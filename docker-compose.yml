@@ -1,0 +1,48 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Puledi@12
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+    networks:
+      - youth-bank-network
+
+  account_service:
+    container_name: account_service
+    build:
+      context: ./account_service
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres
+    networks:
+      - youth-bank-network
+
+  transaction_service:
+    container_name: transaction_service
+    build:
+      context: ./transaction_service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres
+      - account_service
+    networks:
+      - youth-bank-network
+
+volumes:
+  postgres_data:
+
+networks:
+  youth-bank-network:
+    driver: bridge
