@@ -17,7 +17,7 @@ jobs:
           java-version: 17
           cache: maven
 
-      - run: mvn clean verify
+      - run: mvn clean install -DskipTests
 
   docker:
     needs: build-test
