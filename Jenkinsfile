@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        ACCOUNT_IMAGE = "mazulu/account-service"
-        TRANSACTION_IMAGE = "mazulu/transaction-service"
+        ACCOUNT_IMAGE = "nathiiiworld7/account-service"
+        TRANSACTION_IMAGE = "nathiiiworld7/transaction-service"
         TAG = "latest"
     }
 
@@ -52,8 +52,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(
                         credentialsId: 'dockerhub-credentials',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_PASS'
+                        usernameVariable: nathiiiworld7,
+                        passwordVariable: Nkosinathi1$
                 )]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push $ACCOUNT_IMAGE:$TAG'
