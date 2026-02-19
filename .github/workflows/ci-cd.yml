@@ -6,9 +6,7 @@ on:
 
 jobs:
 
-  # ------------------------
-  # 1️⃣ BUILD & TEST STAGE
-  # ------------------------
+
   build:
     runs-on: ubuntu-latest
 
@@ -33,15 +31,6 @@ jobs:
           cd transaction_service
           mvn clean verify -DskipTests
 
-      - name: Build API Gateway
-        run: |
-          cd api_gateway
-          mvn clean verify -DskipTests
-
-
-  # ------------------------
-  # 2️⃣ DOCKER BUILD & PUSH
-  # ------------------------
   docker:
     needs: build
     runs-on: ubuntu-latest
