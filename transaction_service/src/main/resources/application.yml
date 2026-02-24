@@ -39,11 +39,25 @@ spring:
     time-zone: Africa/Johannesburg
 
 # ============================================
-# ACCOUNT SERVICE INTEGRATION
+# EUREKA CLIENT CONFIGURATION
+# ============================================
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # <--- Eureka server URL
+
+# ============================================
+# ACCOUNT SERVICE INTEGRATION (EUREKA-AWARE)
 # ============================================
 
 account-service:
-  url: http://localhost:8080
+  url: http://account-service  # Use service name instead of localhost
 
 # ============================================
 # TRANSACTION BUSINESS RULES
@@ -67,7 +81,7 @@ transaction:
 
 logging:
   level:
-    org.example.transactionservice: DEBUG
+    com.bank.transaction_service: DEBUG
     org.springframework.web.client: DEBUG
     org.hibernate.SQL: DEBUG
 
@@ -82,7 +96,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,eureka
   endpoint:
     health:
       show-details: always
