@@ -5,16 +5,12 @@ server:
 
 spring:
   application:
-    name: account-service
+    name: account-service   # ⚠️ use lowercase (Eureka normalizes anyway)
 
   datasource:
-    # ❌ localhost ❌
-    # url: jdbc:postgresql://localhost:5432/youth_bank_accounts
-
-    # ✅ Docker service name
-    url: jdbc:postgresql://postgres:5432/youth_bank_accounts
+    url: jdbc:postgresql://localhost:5432/youth_bank_accounts
     username: postgres
-    password: postgres
+    password: Puledi@12
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -43,14 +39,8 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
-
-    # ❌ localhost ❌
-    # service-url:
-    #   defaultZone: http://localhost:8761/eureka/
-
-    # ✅ Docker service name
     service-url:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
 
 # =========================
 # Youth Bank Configuration
@@ -80,8 +70,4 @@ logging:
 # External Service URLs
 # =========================
 user-service:
-  # ❌ localhost ❌
-  # url: http://localhost:808X
-
-  # ✅ Docker service name (if user-service is containerized)
   url: http://user-service

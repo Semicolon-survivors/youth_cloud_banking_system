@@ -12,7 +12,11 @@ spring:
     name: transaction-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/youth_bank_transactions
+    # ❌ localhost breaks inside Docker
+    # url: jdbc:postgresql://localhost:5432/youth_bank_transactions
+
+    # ✅ Docker service name
+    url: jdbc:postgresql://postgres:5432/youth_bank_transactions
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -49,15 +53,22 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
+
+    # ❌ localhost breaks inside Docker
+    # service-url:
+    #   defaultZone: http://localhost:8761/eureka/
+
+    # ✅ Docker service name
     service-url:
-      defaultZone: http://localhost:8761/eureka/  # <--- Eureka server URL
+      defaultZone: http://eureka-server:8761/eureka/
 
 # ============================================
 # ACCOUNT SERVICE INTEGRATION (EUREKA-AWARE)
 # ============================================
 
 account-service:
-  url: http://account-service  # Use service name instead of localhost
+  # ✅ Docker service name
+  url: http://account_service
 
 # ============================================
 # TRANSACTION BUSINESS RULES
@@ -84,7 +95,6 @@ logging:
     com.bank.transaction_service: DEBUG
     org.springframework.web.client: DEBUG
     org.hibernate.SQL: DEBUG
-
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 
