@@ -1,5 +1,10 @@
+version: "3.9"
+
 services:
 
+  # ============================
+  # POSTGRES DATABASE
+  # ============================
   postgres:
     image: postgres:16
     container_name: postgres
@@ -15,6 +20,22 @@ services:
     networks:
       - youth-bank-network
 
+  # ============================
+  # EUREKA SERVER
+  # ============================
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - youth-bank-network
+
+  # ============================
+  # ACCOUNT SERVICE
+  # ============================
   account_service:
     container_name: account_service
     build:
@@ -24,9 +45,16 @@ services:
       - "8085:8085"
     depends_on:
       - postgres
+      - eureka-server
+    environment:
+      SPRING_APPLICATION_NAME: account-service
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
     networks:
       - youth-bank-network
 
+  # ============================
+  # TRANSACTION SERVICE
+  # ============================
   transaction_service:
     container_name: transaction_service
     build:
@@ -37,12 +65,24 @@ services:
     depends_on:
       - postgres
       - account_service
+      - eureka-server
+    environment:
+      SPRING_APPLICATION_NAME: transaction-service
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
     networks:
       - youth-bank-network
 
+
+# ============================
+# VOLUMES
+# ============================
 volumes:
   postgres_data:
 
+
+# ============================
+# NETWORK
+# ============================
 networks:
   youth-bank-network:
     driver: bridge
