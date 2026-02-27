@@ -20,7 +20,17 @@ The system follows a microservices architecture with the following components:
 * **PostgreSQL** – Database storage
 
 ```
-Client → Kong API Gateway → Microservices → PostgreSQL
+Client
+   ↓
+Kong API Gateway
+   ↓
+-----------------------------
+|     Eureka Server         |
+-----------------------------
+     ↓              ↓
+Account Service   Transaction Service
+     ↓              ↓
+        PostgreSQL Database
 ```
 
 ---
@@ -51,6 +61,9 @@ The parent Maven project manages dependencies and modules for all services.
 * **Kong API Gateway**
 * **JWT Authentication**
 * **PostgreSQL**
+* **Kubernetes**  
+* **Terraform** 
+* **jenkins**
 * **Prometheus Monitoring**
 * **Docker (optional)**
 
@@ -160,6 +173,74 @@ Requests without a valid age or outside the allowed range will be denied.
 
 ---
 
+# ☸️ Kubernetes Deployment
+
+Kubernetes manifests are located in:
+
+```
+/k8s
+```
+
+Deploy to cluster:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/
+```
+
+---
+
+# 🧱 Terraform Infrastructure
+
+Terraform configuration is located in:
+
+```
+/terraform
+```
+
+Initialize Terraform:
+
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+---
+# 🔐 Environment Variables
+
+Configured inside:
+
+- application.yml
+- Docker Compose
+- Kubernetes ConfigMaps & Secrets
+
+Important variables:
+
+- DB_HOST
+- DB_PORT
+- DB_USERNAME
+- DB_PASSWORD
+- EUREKA_SERVER_URL
+
+---
+
+# 🛑 Troubleshooting
+
+### Port Already in Use
+
+```bash
+netstat -ano | findstr 8081
+taskkill /PID <PID> /F
+```
+### Database Connection Issues
+
+- Ensure PostgreSQL container is running
+- Check username/password
+- Verify DB host in application.yml
+
+---
+
 ## 📊 Monitoring
 
 Prometheus metrics are available through Kong and can be visualized using Grafana dashboards.
@@ -177,6 +258,9 @@ Prometheus metrics are available through Kong and can be visualized using Grafan
 ## 📈 Future Improvements
 
 * Add service discovery
+* Add JWT Authentication
+* Add API rate limiting
+* Add Grafana dashboards
 * Implement CI/CD pipelines
 * Add container orchestration (Kubernetes)
 * Expand authentication and authorization
